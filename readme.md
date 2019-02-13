@@ -17,3 +17,27 @@ What's worse, when `T` is not Clone, the derive fails silently. Rustc won't emit
 The silent errors are confusing, and end up wasting a lot of time.
 
 https://github.com/rust-lang/rust/issues/26925
+
+## `cargo check` does not check doctests
+
+## negative trait bounds are not implemented
+
+The following code is not currently possible:
+
+```rust
+trait CheckSend {
+	fn is_send() -> bool;
+}
+
+impl<T: Send> CheckSend for T {
+	fn is_send() -> bool {
+		true
+	}
+}
+
+impl<T: !Send> CheckSend for T {
+	fn is_send() -> bool {
+		false
+	}
+}
+```
