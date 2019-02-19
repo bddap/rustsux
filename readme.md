@@ -63,3 +63,50 @@ Crate `A` does in fact define the impl, but rustc doesn't know that. Frustrating
 
 I ran into this issue lately. My hacky solution was to `impl Ta for &dyn T { ... }`, which adds some runtime overhead because dynamic dispatch.
 Calling a `Ta` method also becomes a hassle: `foo.method()` becomes `(&foo as &dyn Tb).method()`.
+
+## Enums variants are not standalone types
+
+I see this pattern all the time.
+
+```rust
+enum Foo {
+	Bar(Bar),
+	Baz(Baz),
+}
+
+enum Bar {
+	A,
+	B,
+}
+
+struct Baz {
+	a: bool,
+	b: usize,
+}
+
+let bar: Bar = Bar::A;
+let baz: Baz  = Baz { a: false, b: 0 };
+let foo: Foo = Foo::Bar(Bar::A);
+```
+
+See the boilerplate/repetition?. `Bar(Bar)` smells bad.
+
+
+```rust
+enum Foo {
+	Bar {
+		A,
+		B,
+	},
+	Baz {
+		a: bool,
+		b: usize,
+	},
+}
+
+let bar: Foo::Bar = Foo::Bar::A;
+let baz: Foo::Baz = Foo::Baz { a: false, b: 0 };
+let foo: Foo = Foo::Bar(Foo::Bar::A);
+```
+
+The latter example reduces the number of required type definitions. It feels pretty ergonomic too.
