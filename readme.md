@@ -62,3 +62,4 @@ Due to coherence rules the only place this impl would be allowed is crate `A`.
 Crate `A` does in fact define the impl, but rustc doesn't know that. Frustrating.
 
 I ran into this issue lately. My hacky solution was to `impl Ta for &dyn T { ... }`, which adds some runtime overhead because dynamic dispatch.
+Calling a `Ta` method also becomes a hassle: `foo.method()` becomes `(&foo as &dyn Tb).method()`.
