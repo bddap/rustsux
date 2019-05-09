@@ -120,7 +120,7 @@ use crate::network_byte_order::Ne;
 
 pub struct ProofOfWork<T: Ne> { ... };
 
-impl<T: Ne> ProofOfWork { ... }
+impl<T: Ne> ProofOfWork<T> { ... }
 ```
 
 should be this:
