@@ -110,3 +110,25 @@ let foo: Foo = Foo::Bar(Foo::Bar::A);
 ```
 
 The latter example reduces the number of required type definitions. It feels pretty ergonomic too.
+
+## Bounds for type arguments are repeated unnessesarily.
+
+This:
+
+```rust
+use crate::network_byte_order::Ne;
+
+pub struct ProofOfWork<T: Ne> { ... };
+
+impl<T: Ne> ProofOfWork { ... }
+```
+
+should be this:
+
+```rust
+use crate::network_byte_order::Ne;
+
+pub struct ProofOfWork<T: Ne> { ... };
+
+impl ProofOfWork { ... }
+```
