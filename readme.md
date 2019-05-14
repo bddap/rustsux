@@ -132,3 +132,6 @@ pub struct ProofOfWork<T: Ne> { ... };
 
 impl ProofOfWork { ... }
 ```
+
+*Edit* trait bounds aren't actually needed in the struct definition https://github.com/serde-rs/json/issues/469 https://github.com/rust-lang/rust-clippy/issues/1689
+
